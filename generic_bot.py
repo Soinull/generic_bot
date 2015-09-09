@@ -2,7 +2,7 @@
 #Generic bot code
 #Author- Tim Crothers
 #Sep 2015
-#Rev 1.4
+#Rev 1.5
 
 import socket
 import os
@@ -188,5 +188,12 @@ def Main():
                         
         if srvmsg.find("LOLNOGTFO") != -1:              # Received a shutdown request
             logoff()
-            
-Main()
+try:            
+    Main()
+except KeyboardInterrupt:
+    f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d %I:%M:%S ")+"< "+"## ^C Received from console ##\n")
+    timer.stop()
+    srvsock.close()
+    f.close()
+    exit()
+
