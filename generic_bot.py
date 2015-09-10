@@ -2,7 +2,7 @@
 #Generic bot code
 #Author- Tim Crothers
 #Sep 2015
-#Rev 1.5
+#Rev 1.6
 
 import socket
 import os
@@ -58,6 +58,19 @@ class Manager(object):
 
 # #################################################################
 #
+#  Reverse lookup target IP's
+#
+# #################################################################
+
+def revlookup(IP):
+    try:
+        hostname=socket.gethostbyaddr(IP)
+    else:
+        hostname='Unresolved'
+    return hostname
+
+# #################################################################
+#
 #  These modules mimid various actual bot functionality
 #
 # #################################################################
@@ -83,18 +96,21 @@ def udpflood(cmd):                                 # Bot told to do a UDP flood
     target = cmd.split(' ')
     xmit=srvsock.sendall("UDP Flooding "+target[1]+":"+target[2]+" for "+target[3]+" seconds\n")
     f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d %I:%M:%S ")+"> "+"UDP Flooding "+target[1]+":"+target[2]+" for "+target[3]+" seconds\n")
+    f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d %I:%M:%S ")+"> "+target[1]+"=="+revlookup(target[1])+"\n")
 
 def tcpflood(cmd):                                 # Bot told to do a TDP flood
     global f, srvsock
     target = cmd.split(' ')
     xmit=srvsock.sendall("TCP Flooding "+target[1]+":"+target[2]+" for "+target[3]+" seconds\n")
     f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d %I:%M:%S ")+"> "+"TCP Flooding "+target[1]+":"+target[2]+" for "+target[3]+" seconds\n")
+    f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d %I:%M:%S ")+"> "+target[1]+"=="+revlookup(target[1])+"\n")
 
 def junk(cmd):                                     # Bot told to do a junk DoS flood
     global f, srvsock
     target = cmd.split(' ')
     xmit=srvsock.sendall("JUNK Flooding "+target[1]+":"+target[2]+" for "+target[3]+" seconds\n")
     f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d %I:%M:%S ")+"> "+"JUNK Flooding "+target[1]+":"+target[2]+" for "+target[3]+" seconds\n")
+    f.write(datetime.datetime.utcnow().strftime("%Y-%m-%d %I:%M:%S ")+"> "+target[1]+"=="+revlookup(target[1])+"\n")
     
 def logoff():                                   # Shutdown bot as requested - too suspicious to stay otherwise
     global f, srvsock, timer
@@ -115,7 +131,7 @@ def Main():
 
     f = open('bot.log','a')
     f.write('###############################################\n')
-    f.write('##    Connecting to C2 '+server+'\n')
+    f.write('##    Connecting to C2 '+server+':'+port+'\n')
     f.write('##    '+datetime.datetime.utcnow().strftime("%Y-%m-%d %I:%M:%S UTC")+'\n')
     f.write('###############################################\n\n')
 
