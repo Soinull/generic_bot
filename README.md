@@ -3,7 +3,7 @@ Generic bot code
 
 Author: Tim Crothers
 Date: Sep 2015
-Ver: 1.6
+Ver: 1.6.4
 
 This is demonstration code for use in infiltrating C2 infrastructures.  This particular example is configured to mimic the Gafgyt bot.
 
